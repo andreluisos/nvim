@@ -1,5 +1,8 @@
 {
   "extras": [
+    "lazyvim.plugins.extras.coding.copilot",
+    "lazyvim.plugins.extras.coding.copilot-chat",
+    "lazyvim.plugins.extras.coding.neogen",
     "lazyvim.plugins.extras.lang.java",
     "lazyvim.plugins.extras.lang.kotlin",
     "lazyvim.plugins.extras.lang.markdown"

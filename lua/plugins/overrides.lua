@@ -1,7 +1,7 @@
 return {
   { "nvimdev/dashboard-nvim", enabled = false },
-  { "nvim-neo-tree/neo-tree.nvim", enabled = false },
-  { "folke/noice.nvim", enabled = false },
+  { "folke/noice.nvim",       enabled = false },
+  { "folke/flash.nvim",       enabled = false },
   {
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)

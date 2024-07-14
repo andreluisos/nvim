@@ -3,7 +3,7 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed =
-        vim.tbl_extend("force", opts.ensure_installed, { "google-java-format", "prettier", "black", "clang-format" })
+          vim.tbl_extend("force", opts.ensure_installed, { "google-java-format", "prettier", "black", "clang-format" })
     end,
   },
   {
@@ -19,7 +19,7 @@ return {
         },
       },
       formatters_by_ft = {
-        java = { "clang-format" },
+        java = { "google-java-format" },
         python = { "black" },
         typescript = { "prettier" },
         javascript = { "prettier" },
