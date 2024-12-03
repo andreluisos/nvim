@@ -1,1 +1,2 @@
-return { 'VidocqH/lsp-lens.nvim', opts = {} }
+return {}
+-- return { 'VidocqH/lsp-lens.nvim', opts = {} }
