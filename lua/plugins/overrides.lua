@@ -36,7 +36,7 @@ return {
 						{ id = "watches", size = 0.20 },
 					},
 					position = "left",
-					size = 50,
+					size = 75,
 				},
 				{
 					elements = {
@@ -52,10 +52,12 @@ return {
 			local dapui = require "dapui"
 			dapui.setup(opts)
 			dap.listeners.after.event_initialized["dapui_config"] = function()
+				require("neo-tree.command").execute { action = "close" }
 				dapui.open {}
 			end
 			dap.listeners.before.event_terminated["dapui_config"] = function()
 				dapui.close {}
+				require("neo-tree.command").execute { action = "show" }
 			end
 			-- dap.listeners.before.event_exited["dapui_config"] = function()
 			-- 	dapui.close {}

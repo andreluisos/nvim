@@ -15,7 +15,7 @@ return {
 		opts = {
 			formatters = {
 				["google-java-format"] = {
-					prepend_args = { "-a" },
+					-- prepend_args = { "-a" },
 				},
 				["clang-format"] = {
 					prepend_args = { "-style=Google", "--tab-width=4" },

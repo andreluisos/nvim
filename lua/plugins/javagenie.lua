@@ -1,3 +1,7 @@
+if false then
+	return {}
+end
+
 return {
 	"andreluisos/nvim-javagenie",
 	dependencies = {
