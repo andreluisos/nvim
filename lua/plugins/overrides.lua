@@ -37,6 +37,21 @@ return {
 			},
 		},
 		opts = {
+			controls = {
+				element = "repl",
+				enabled = true,
+				icons = {
+					disconnect = "",
+					pause = "",
+					play = " (F5)",
+					run_last = "",
+					step_back = "",
+					step_into = " (F8)",
+					step_out = " (F7)",
+					step_over = " (F9)",
+					terminate = "",
+				},
+			},
 			floating = { border = "single" },
 			layouts = {
 				{
@@ -45,6 +60,7 @@ return {
 						{ id = "breakpoints", size = 0.20 },
 						{ id = "stacks", size = 0.20 },
 						{ id = "watches", size = 0.20 },
+						{ id = "repl", size = 0.01 },
 					},
 					position = "left",
 					size = math.floor(screen_width * 0.30),
