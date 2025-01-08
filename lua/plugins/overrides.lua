@@ -63,7 +63,7 @@ return {
 						{ id = "repl", size = 0.01 },
 					},
 					position = "left",
-					size = math.floor(screen_width * 0.30),
+					size = math.floor(screen_width * 0.31),
 				},
 				{
 					elements = {
