@@ -1,3 +1,14 @@
+local function get_screen_size()
+	local uis = vim.api.nvim_list_uis()
+	if #uis > 0 then
+		return uis[1].width, uis[1].height
+	else
+		return nil, nil
+	end
+end
+
+local screen_width, screen_height = get_screen_size()
+
 return {
 	{ "nvimdev/dashboard-nvim", enabled = false },
 	{ "folke/noice.nvim", opts = {
@@ -36,14 +47,14 @@ return {
 						{ id = "watches", size = 0.20 },
 					},
 					position = "left",
-					size = 75,
+					size = math.floor(screen_width * 0.30),
 				},
 				{
 					elements = {
 						{ id = "console", size = 1 },
 					},
 					position = "bottom",
-					size = 20,
+					size = math.floor(screen_height * 0.40),
 				},
 			},
 		},
@@ -63,5 +74,15 @@ return {
 			-- 	dapui.close {}
 			-- end
 		end,
+	},
+	{
+		"zbirenbaum/copilot.lua",
+		event = "InsertEnter",
+		opts = {
+			suggestion = {
+				enabled = true,
+				auto_trigger = false,
+			},
+		},
 	},
 }
