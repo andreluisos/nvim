@@ -3,7 +3,7 @@ return {
   event = "VeryLazy",
   cond = vim.g.neovide == nil,
   opts = {
-    cursor_color = "#ff8800",
+    cursor_color = "#AFD802",
     stiffness = 0.3,
     trailing_stiffness = 0.1,
     damping = 0.5,
