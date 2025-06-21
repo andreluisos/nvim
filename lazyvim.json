@@ -2,6 +2,7 @@
   "extras": [
     "lazyvim.plugins.extras.dap.core",
     "lazyvim.plugins.extras.dap.nlua",
+    "lazyvim.plugins.extras.editor.fzf",
     "lazyvim.plugins.extras.formatting.black",
     "lazyvim.plugins.extras.formatting.prettier",
     "lazyvim.plugins.extras.lang.angular",
@@ -18,7 +19,8 @@
     "lazyvim.plugins.extras.lang.toml",
     "lazyvim.plugins.extras.lang.typescript",
     "lazyvim.plugins.extras.lang.vue",
-    "lazyvim.plugins.extras.lang.yaml"
+    "lazyvim.plugins.extras.lang.yaml",
+    "lazyvim.plugins.extras.ui.smear-cursor"
   ],
   "install_version": 8,
   "news": {
