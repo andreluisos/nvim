@@ -2,6 +2,8 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+
 -- [[ DAP ]]
 vim.keymap.set('n', '<F5>', function()
   require('dap').continue()
