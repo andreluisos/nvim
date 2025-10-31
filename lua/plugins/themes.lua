@@ -19,8 +19,8 @@ return {
         -- You can configure multiple style with comma separated, For e.g., keywords = 'italic,bold'
         code_style = {
           comments = "italic",
-          keywords = "none",
-          functions = "none",
+          keywords = "bold",
+          functions = "italic,bold",
           strings = "none",
           variables = "none",
         },
@@ -50,4 +50,6 @@ return {
       colorscheme = "onedark",
     },
   },
+  { "rebelot/kanagawa.nvim" },
+  { "projekt0n/github-nvim-theme" },
 }
