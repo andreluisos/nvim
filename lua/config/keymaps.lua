@@ -64,4 +64,4 @@ local function commit_staged_non_blocking_system()
   end)
 end
 
-vim.keymap.set("n", "<leader>gc", commit_staged_non_blocking_system, { desc = "Git commit staged changes (opencode)" })
+vim.keymap.set("n", "<leader>gc", commit_staged_non_blocking_system, { desc = "Git commit staged changes" })
