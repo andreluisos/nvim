@@ -55,7 +55,7 @@ else
         local ram_swap_component = {
           function()
             local cmd =
-              "free -m | awk 'NR==2 { ram_total=$2; ram_available=$7 } NR==3 { swap_total=$2; swap_used=$3 } END { printf \"󰍛 %.0f%%%% 󰓡 %.0f%%%%\", (ram_available * 100 / ram_total), (swap_total == 0 ? 0 : (swap_used * 100 / swap_total)) }'"
+              "free -m | awk 'NR==2 { ram_total=$2; ram_available=$7 } NR==3 { swap_total=$2; swap_used=$3 } END { printf \"󰍛 %.0f%%%% 󰓡 %.0f%%%%\", ((ram_total - ram_available) * 100 / ram_total), (swap_total == 0 ? 0 : (swap_used * 100 / swap_total)) }'"
             local f = io.popen(cmd)
             if not f then
               return ""
