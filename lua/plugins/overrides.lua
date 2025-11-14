@@ -44,29 +44,71 @@ else
         picker = { sources = { notifications = { win = { preview = { wo = { wrap = true } } } } } },
       },
     },
+
     {
       "nvim-lualine/lualine.nvim",
       opts = function(_, opts)
+        ---
+        --- Async Status Component
+        ---
+        -- 1. Define the cache variable.
+        -- We'll give it a default value while we wait for the first run.
+        vim.g.my_status_stats = " ... 󰍛 ... 󰓡 ..."
+        -- 2. Define the asynchronous updater function
+        local function update_stats()
+          local awk_cmd = [[
+            awk '
+              FILENAME == "/proc/meminfo" {
+                if (/MemTotal:/) { ram_total=$2 }
+                if (/MemAvailable:/) { ram_available=$2 }
+                if (/SwapTotal:/) { swap_total=$2 }
+                if (/SwapFree:/) { swap_free=$2 }
+                next
+              }
+              FILENAME == "/sys/class/hwmon/hwmon5/temp1_input" {
+                cpu_temp = $1 / 1000
+                next
+              }
+              END {
+                ram_percent = ((ram_total - ram_available) * 100 / ram_total)
+                swap_used = swap_total - swap_free
+                swap_percent = (swap_total == 0 ? 0 : (swap_used * 100 / swap_total))
+                printf " %.0f°C 󰍛 %.0f%%%% 󰓡 %.0f%%%%", cpu_temp, ram_percent, swap_percent
+              }
+            ' /proc/meminfo /sys/class/hwmon/hwmon5/temp1_input
+          ]]
+          -- Use vim.fn.jobstart for non-blocking execution
+          vim.fn.jobstart({ "sh", "-c", awk_cmd }, {
+            stdout_buffered = true,
+            -- When the command finishes, on_stdout runs
+            on_stdout = function(_, data)
+              if data[1] then
+                -- Trim whitespace from the output
+                local stats = data[1]:gsub("^%s*(.-)%s*$", "%1")
+                if stats ~= "" and stats ~= vim.g.my_status_stats then
+                  vim.g.my_status_stats = stats
+                  vim.cmd.redrawstatus() -- Force lualine to update
+                end
+              end
+            end,
+          })
+        end
+        -- 3. Create and start the timer
+        -- Create a timer that will call our function
+        local stats_timer = vim.loop.new_timer()
+        -- Start the timer
+        -- 0: Start immediately on load
+        -- 2000: Repeat every 2000ms (2 seconds)
+        if not stats_timer then
+          vim.notify("Lualine: Error creating stats timer", vim.log.levels.ERROR)
+          return opts -- Return the original opts table
+        end
+        stats_timer:start(0, 2000, vim.schedule_wrap(update_stats))
+        -- 4. Define the lualine component (now 100% non-blocking)
         local ram_swap_cpu_component = {
           function()
-            local ram_cmd =
-              "free -m | awk 'NR==2 { ram_total=$2; ram_available=$7 } NR==3 { swap_total=$2; swap_used=$3 } END { printf \"󰍛 %.0f%%%% 󰓡 %.0f%%%%\", ((ram_total - ram_available) * 100 / ram_total), (swap_total == 0 ? 0 : (swap_used * 100 / swap_total)) }'"
-            local f_ram = io.popen(ram_cmd)
-            local ram_stats = ""
-            if f_ram then
-              ram_stats = f_ram:read("*a")
-              f_ram:close()
-              ram_stats = ram_stats:gsub("[\n\r]", "")
-            end
-            local cpu_cmd = "awk '{printf \" %.0f°C\", $1 / 1000}' /sys/class/hwmon/hwmon5/temp1_input"
-            local f_cpu = io.popen(cpu_cmd)
-            local cpu_temp = ""
-            if f_cpu then
-              cpu_temp = f_cpu:read("*a")
-              f_cpu:close()
-              cpu_temp = cpu_temp:gsub("[\n\r]", "")
-            end
-            return cpu_temp .. " " .. ram_stats
+            -- This is now instant. It just reads the global variable.
+            return vim.g.my_status_stats
           end,
           color = function()
             if package.loaded["Snacks"] and Snacks.util and Snacks.util.color then
@@ -75,6 +117,9 @@ else
             return { fg = "#9e9e9e" } -- Fallback grey
           end,
         }
+        ---
+        --- End Async Component
+        ---
         table.insert(opts.sections.lualine_y, ram_swap_cpu_component)
         return opts
       end,
