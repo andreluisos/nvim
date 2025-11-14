@@ -42,3 +42,25 @@ for i = 1, 5 do
     silent = true,
   })
 end
+
+-- Add terminal-like copy/paste in Neovide
+vim.keymap.set("v", "<C-S-c>", '"+y', {
+  desc = "Copy to clipboard (Visual)",
+  noremap = true,
+  silent = true,
+})
+vim.keymap.set("n", "<C-S-v>", '"+p', {
+  desc = "Paste from clipboard (Normal)",
+  noremap = true,
+  silent = true,
+})
+vim.keymap.set("i", "<C-S-v>", "<C-r>+", {
+  desc = "Paste from clipboard (Insert)",
+  noremap = true,
+  silent = true,
+})
+vim.keymap.set("c", "<C-S-v>", "<C-r>+", {
+  desc = "Paste from clipboard (Command)",
+  noremap = true,
+  silent = true,
+})
