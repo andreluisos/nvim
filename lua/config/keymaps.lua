@@ -33,3 +33,12 @@ end)
 vim.keymap.set("n", "<F7>", function()
   require("dap").step_out()
 end)
+
+-- Tabs
+for i = 1, 5 do
+  vim.keymap.set("n", string.format("<M-%d>", i), string.format("%dgt", i), {
+    desc = "Go to Tab " .. i,
+    noremap = true,
+    silent = true,
+  })
+end
