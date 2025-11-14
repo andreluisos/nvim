@@ -11,11 +11,17 @@ local paths_to_add = {
   home .. "/.opencode/bin:",
 }
 
+vim.env.PATH = table.concat(paths_to_add, ":") .. ":" .. vim.env.PATH
+
 vim.o.mouse = "a" -- Enable mouse in all modes (optional, but scroll needs this)
 vim.o.mousefocus = true -- Optional: Allow window focus changes via mouse
 vim.o.clipboard = "unnamedplus"
 vim.o.linespace = 1
+vim.o.showtabline = 2
+
 vim.g.rust_recommended_style = 0
+
+-- Neovide settings
 vim.g.neovide_fullscreen = true
 vim.g.neovide_padding_top = 0
 vim.g.neovide_padding_bottom = 0
@@ -25,7 +31,6 @@ vim.g.neovide_cursor_smooth_blink = true
 vim.g.neovide_cursor_antialiasing = true
 vim.g.neovide_cursor_animation_length = 0.300
 vim.g.neovide_cursor_smooth_blink = true
-vim.env.PATH = table.concat(paths_to_add, ":") .. ":" .. vim.env.PATH
 
 -- Disable mouse clicks (left, right, middle click) but keep scrolling
 vim.cmd([[
