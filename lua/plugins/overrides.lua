@@ -98,12 +98,12 @@ else
         local stats_timer = vim.loop.new_timer()
         -- Start the timer
         -- 0: Start immediately on load
-        -- 2000: Repeat every 2000ms (2 seconds)
+        -- 5000: Repeat every 5000ms (5 seconds)
         if not stats_timer then
           vim.notify("Lualine: Error creating stats timer", vim.log.levels.ERROR)
           return opts -- Return the original opts table
         end
-        stats_timer:start(0, 2000, vim.schedule_wrap(update_stats))
+        stats_timer:start(0, 5000, vim.schedule_wrap(update_stats))
         -- 4. Define the lualine component (now 100% non-blocking)
         local ram_swap_cpu_component = {
           function()
