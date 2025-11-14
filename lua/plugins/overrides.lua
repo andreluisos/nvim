@@ -73,7 +73,6 @@ else
         }
         -- Add your component to the 'lualine_y' section
         table.insert(opts.sections.lualine_y, ram_swap_component)
-        -- Return the modified opts table
         return opts
       end,
     },
