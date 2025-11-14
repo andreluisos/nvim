@@ -2,6 +2,7 @@ if false then
   return {}
 else
   return {
+    { "folke/snacks.nvim", opts = { dashboard = { enabled = false } } },
     {
       "nvim-mini/mini.animate",
       enabled = not vim.g.neovide,
@@ -36,6 +37,11 @@ else
           },
         },
       },
+    },
+
+    {
+      "folke/persistence.nvim",
+      enabled = false,
     },
 
     {
