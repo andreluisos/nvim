@@ -111,17 +111,16 @@ else
             -- This is now instant. It just reads the global variable.
             return vim.g.my_status_stats
           end,
-          color = function()
-            if package.loaded["Snacks"] and Snacks.util and Snacks.util.color then
-              return { fg = Snacks.util.color("Comment") }
-            end
-            return { fg = "#9e9e9e" } -- Fallback grey
-          end,
         }
         ---
         --- End Async Component
         ---
         table.insert(opts.sections.lualine_y, ram_swap_cpu_component)
+        opts.sections.lualine_z = {
+          function()
+            return os.date("%a %d/%m/%Y") .. " " .. os.date("%R")
+          end,
+        }
         return opts
       end,
     },
