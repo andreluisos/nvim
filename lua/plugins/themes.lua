@@ -43,13 +43,39 @@ return {
       })
     end,
   },
+
   { "rebelot/kanagawa.nvim" },
+
   { "projekt0n/github-nvim-theme" },
+
   {
     "Kaikacy/Lemons.nvim",
     version = "*", -- for stable release
     lazy = false,
     priority = 1000,
+  },
+
+  { "armannikoyan/rusty" },
+
+  {
+    "nyoom-engineering/oxocarbon.nvim",
+  },
+
+  {
+    "EdenEast/nightfox.nvim",
+    config = function()
+      require("nightfox").setup({
+        options = {
+          transparent = false,
+          terminal_colors = true,
+          styles = {
+            comments = "italic",
+            keywords = "bold",
+            functions = "italic,bold",
+          },
+        },
+      })
+    end,
   },
   {
     "LazyVim/LazyVim",
@@ -57,8 +83,4 @@ return {
       colorscheme = "carbonfox",
     },
   },
-  {
-    "nyoom-engineering/oxocarbon.nvim",
-  },
-  { "EdenEast/nightfox.nvim" },
 }
