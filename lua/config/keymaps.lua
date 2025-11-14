@@ -64,3 +64,10 @@ vim.keymap.set("c", "<C-S-v>", "<C-r>+", {
   noremap = true,
   silent = true,
 })
+
+-- Override LazyVim's "New Tab" to open at the end
+vim.keymap.set("n", "<leader><tab><tab>", ":$tabnew<CR>", {
+  desc = "New Tab (at end)",
+  noremap = true,
+  silent = true,
+})
