@@ -130,33 +130,5 @@ else
         return opts
       end,
     },
-    {
-      "akinsho/bufferline.nvim",
-      opts = {
-        options = {
-          -- Disable the default tab filter
-          filter_by_tab = false,
-          -- Use your custom CWD-based filter
-          custom_filter = function(buf_number)
-            local buf_name = vim.api.nvim_buf_get_name(buf_number)
-            if buf_name == "" then
-              return true -- Always show unnamed buffers
-            end
-            if not not buf_name:find(vim.fn.getcwd(), 0, true) then
-              return true
-            end
-          end,
-          -- START: Updated sort_by function
-          sort_by = function(buffer_a, buffer_b)
-            -- Use vim.fn.getftime() to get the modification timestamp
-            -- It's simpler and linter-friendly.
-            local mod_a = vim.fn.getftime(buffer_a.path) or 0
-            local mod_b = vim.fn.getftime(buffer_b.path) or 0
-            return mod_a > mod_b
-          end,
-          -- END: Updated sort_by function
-        },
-      },
-    },
   }
 end
