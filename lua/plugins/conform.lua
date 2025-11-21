@@ -3,7 +3,7 @@ return {
     "mason-org/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed =
-          vim.tbl_extend("force", opts.ensure_installed, { "google-java-format", "prettier", "black", "clang-format" })
+          vim.tbl_extend("force", opts.ensure_installed, { "google-java-format", "prettier", "black", "clang-format", "stylua", "rust-analyzer" })
     end,
   },
   {
