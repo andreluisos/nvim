@@ -18,6 +18,7 @@ vim.o.mousefocus = true -- Optional: Allow window focus changes via mouse
 vim.o.clipboard = "unnamedplus"
 vim.o.linespace = 1
 vim.o.showtabline = 2
+vim.o.termguicolors = true
 
 vim.g.rust_recommended_style = 0
 
