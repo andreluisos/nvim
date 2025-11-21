@@ -43,27 +43,34 @@ for i = 1, 5 do
   })
 end
 
--- Add terminal-like copy/paste in Neovide
-vim.keymap.set("v", "<C-S-c>", '"+y', {
-  desc = "Copy to clipboard (Visual)",
-  noremap = true,
-  silent = true,
-})
-vim.keymap.set("n", "<C-S-v>", '"+p', {
-  desc = "Paste from clipboard (Normal)",
-  noremap = true,
-  silent = true,
-})
-vim.keymap.set("i", "<C-S-v>", "<C-r>+", {
-  desc = "Paste from clipboard (Insert)",
-  noremap = true,
-  silent = true,
-})
-vim.keymap.set("c", "<C-S-v>", "<C-r>+", {
-  desc = "Paste from clipboard (Command)",
-  noremap = true,
-  silent = true,
-})
+-- Allow Ctrl+Shift+V to paste from system clipboard in Neovide
+if vim.g.neovide then
+  vim.keymap.set("v", "<C-S-c>", '"+y', {
+    desc = "Copy to clipboard (Visual)",
+    noremap = true,
+    silent = true,
+  })
+  vim.keymap.set("n", "<C-S-v>", '"+p', {
+    desc = "Paste from clipboard (Normal)",
+    noremap = true,
+    silent = true,
+  })
+  vim.keymap.set("i", "<C-S-v>", "<C-r>+", {
+    desc = "Paste from clipboard (Insert)",
+    noremap = true,
+    silent = true,
+  })
+  vim.keymap.set("c", "<C-S-v>", "<C-r>+", {
+    desc = "Paste from clipboard (Command)",
+    noremap = true,
+    silent = true,
+  })
+  vim.keymap.set("t", "<C-S-v>", '<C-\\><C-n>"+pi', {
+    desc = "Paste from clipboard (Terminal)",
+    noremap = true,
+    silent = true,
+  })
+end
 
 -- Override LazyVim's "New Tab" to open at the end
 vim.keymap.set("n", "<leader><tab><tab>", ":$tabnew<CR>", {
