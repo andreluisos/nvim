@@ -78,9 +78,13 @@ return {
     end,
   },
   {
+    "adibhanna/yukinord.nvim",
+    priority = 1000,
+  },
+  {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "carbonfox",
+      colorscheme = "yukinord",
     },
   },
 }
