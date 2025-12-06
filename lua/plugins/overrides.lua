@@ -16,7 +16,7 @@ else
     {
       "sphamba/smear-cursor.nvim",
       event = "VeryLazy",
-      enabled = false
+      enabled = false,
     },
 
     {
@@ -109,6 +109,15 @@ else
         }
         return opts
       end,
+    },
+
+    {
+      "akinsho/bufferline.nvim",
+      opts = {
+        options = {
+          always_show_bufferline = true,
+        },
+      },
     },
   }
 end

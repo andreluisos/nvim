@@ -1,3 +1,6 @@
+if true then
+  return {}
+end
 local function get_screen_size()
   local uis = vim.api.nvim_list_uis()
   if #uis > 0 then
@@ -49,11 +52,11 @@ return {
     layouts = {
       {
         elements = {
-          { id = "scopes",      size = 0.40 },
+          { id = "scopes", size = 0.40 },
           { id = "breakpoints", size = 0.20 },
-          { id = "stacks",      size = 0.20 },
-          { id = "watches",     size = 0.20 },
-          { id = "repl",        size = 0.01 },
+          { id = "stacks", size = 0.20 },
+          { id = "watches", size = 0.20 },
+          { id = "repl", size = 0.01 },
         },
         position = "left",
         size = math.floor(screen_width * 0.31),

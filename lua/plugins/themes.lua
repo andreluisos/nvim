@@ -82,6 +82,11 @@ return {
     priority = 1000,
   },
   {
+    "nendix/zen.nvim",
+    lazy = false,
+    priority = 1000,
+  },
+  {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "carbonfox",
