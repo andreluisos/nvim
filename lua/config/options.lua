@@ -19,7 +19,7 @@ vim.o.clipboard = "unnamedplus"
 vim.o.linespace = 1
 vim.o.showtabline = 2
 vim.o.termguicolors = true
-
+vim.o.shell = "/usr/bin/zsh"
 vim.g.rust_recommended_style = 0
 
 -- Neovide settings
