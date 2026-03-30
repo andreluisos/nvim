@@ -51,7 +51,7 @@ else
                 if (/SwapFree:/) { swap_free=$2 }
                 next
               }
-              FILENAME == "/sys/class/hwmon/hwmon5/temp1_input" {
+              FILENAME == "/sys/class/hwmon/hwmon2/temp1_input" {
                 cpu_temp = $1 / 1000
                 next
               }
@@ -61,7 +61,7 @@ else
                 swap_percent = (swap_total == 0 ? 0 : (swap_used * 100 / swap_total))
                 printf " %.0f°C 󰍛 %.0f%%%% 󰓡 %.0f%%%%", cpu_temp, ram_percent, swap_percent
               }
-            ' /proc/meminfo /sys/class/hwmon/hwmon5/temp1_input
+            ' /proc/meminfo /sys/class/hwmon/hwmon2/temp1_input
           ]]
           -- Use vim.fn.jobstart for non-blocking execution
           vim.fn.jobstart({ "sh", "-c", awk_cmd }, {
