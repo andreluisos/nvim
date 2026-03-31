@@ -1,17 +1,6 @@
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
--- Get the user's home directory
-local home = vim.env.HOME
-local paths_to_add = {
-  home .. "/bin",
-  home .. "/.local/bin",
-  "/usr/local/bin",
-  home .. "/.cargo/bin",
-  home .. "/.opencode/bin:",
-}
-
-vim.env.PATH = table.concat(paths_to_add, ":") .. ":" .. vim.env.PATH
 
 vim.o.mouse = "a" -- Enable mouse in all modes (optional, but scroll needs this)
 vim.o.mousefocus = true -- Optional: Allow window focus changes via mouse
@@ -19,7 +8,6 @@ vim.o.clipboard = "unnamedplus"
 vim.o.linespace = 1
 vim.o.showtabline = 2
 vim.o.termguicolors = true
-vim.o.shell = "/usr/bin/zsh"
 vim.g.rust_recommended_style = 0
 
 -- Neovide settings
