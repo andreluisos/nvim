@@ -4,6 +4,7 @@ return {
   opts = {
     filter_by_tab = true, -- Enable tab-based buffer filtering
     autoload_last_session = true, -- Auto-load latest session on startup
+    stop_lsp_on_tab_leave = false,
     autosave = {
       enabled = true, -- Enable autosave
       on_exit = true, -- Save on exit
