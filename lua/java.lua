@@ -1,7 +1,12 @@
 local JDTLS_CACHE_DIRECTORY = vim.fs.joinpath(vim.fn.stdpath("cache"), "jdtls")
 local LOMBOK_JAR = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "share", "jdtls", "lombok.jar")
+-- Postfix templates carry edit ranges that start before the dot, which makes Neovim filter out
+-- every member completion after "Type."; disabling them keeps member suggestions visible.
 local JAVA_SETTINGS = {
-  java = { inlayHints = { parameterNames = { enabled = "all" } } },
+  java = {
+    inlayHints = { parameterNames = { enabled = "all" } },
+    completion = { postfix = { enabled = false } },
+  },
 }
 
 local function find_project_root(file_path)
