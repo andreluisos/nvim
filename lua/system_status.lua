@@ -1,7 +1,7 @@
 local M = {}
 
 local STATUS_SCRIPT = vim.fs.joinpath(vim.env.HOME, ".config", "tmux", "status.sh")
-local REFRESH_INTERVAL_MILLISECONDS = 5000
+local REFRESH_INTERVAL_MILLISECONDS = 1000
 local START_IMMEDIATELY = 0
 local SUCCESS_EXIT_CODE = 0
 

@@ -7,6 +7,9 @@ local GIT_BRANCH_HIGHLIGHT = "StlGit"
 local GIT_TIMEOUT_MILLISECONDS = 1000
 local PATH_SEPARATOR_LENGTH = 1
 local SEGMENT_SEPARATOR = " | "
+local CLOCK_FORMAT = "%d/%m/%Y %H:%M:%S"
+local CLOCK_REDRAW_INTERVAL_MILLISECONDS = 1000
+local START_IMMEDIATELY = 0
 
 local MODE_LABELS = {
   n = "NORMAL",
@@ -81,7 +84,11 @@ local function render_system_status()
   if text == "" then
     return ""
   end
-  return escape_statusline_text(text) .. SEGMENT_SEPARATOR
+  return SEGMENT_SEPARATOR .. escape_statusline_text(text)
+end
+
+local function render_clock()
+  return SEGMENT_SEPARATOR .. os.date(CLOCK_FORMAT)
 end
 
 function M.render()
@@ -90,10 +97,11 @@ function M.render()
     .. " "
     .. render_path()
     .. "%="
-    .. render_system_status()
     .. render_diagnostics()
     .. vim.bo.filetype
     .. " %l:%c"
+    .. render_system_status()
+    .. render_clock()
 end
 
 local function read_git_output(arguments)
@@ -119,11 +127,17 @@ local function redraw_statusline()
   vim.cmd.redrawstatus({ bang = true })
 end
 
+local function start_clock_timer()
+  local timer = assert(vim.uv.new_timer())
+  timer:start(START_IMMEDIATELY, CLOCK_REDRAW_INTERVAL_MILLISECONDS, vim.schedule_wrap(redraw_statusline))
+end
+
 local statusline_group = vim.api.nvim_create_augroup("native_statusline", { clear = true })
 vim.api.nvim_create_autocmd("BufEnter", { group = statusline_group, callback = update_buffer_git_context })
 vim.api.nvim_create_autocmd("DiagnosticChanged", { group = statusline_group, callback = redraw_statusline })
 
 define_highlights()
+start_clock_timer()
 vim.o.statusline = "%!v:lua.require'statusline'.render()"
 
 return M
