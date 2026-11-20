@@ -66,7 +66,6 @@ vim.diagnostic.config({
   },
   severity_sort = true,
 })
-vim.opt.completeopt:append("noselect")
 
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("lsp_attach", { clear = true }),
