@@ -12,7 +12,7 @@ local REQUIRED_PACKAGES = {
   "pyright",
   "ruff",
   "jdtls",
-  "kotlin-language-server",
+  "kotlin-lsp",
   "rust-analyzer",
   "clangd",
   "stylua",

@@ -2,8 +2,11 @@ vim.g.mapleader = " "
 
 require("plugins")
 require("options")
+require("filetypes")
 require("mason_tools")
 require("lsp")
+require("java")
+require("rust")
 require("colorscheme")
 require("netrw")
 require("statusline")
