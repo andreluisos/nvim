@@ -84,11 +84,11 @@ local function render_system_status()
   if text == "" then
     return ""
   end
-  return SEGMENT_SEPARATOR .. escape_statusline_text(text)
+  return escape_statusline_text(text) .. SEGMENT_SEPARATOR
 end
 
 local function render_clock()
-  return SEGMENT_SEPARATOR .. os.date(CLOCK_FORMAT)
+  return os.date(CLOCK_FORMAT)
 end
 
 function M.render()
@@ -100,6 +100,7 @@ function M.render()
     .. render_diagnostics()
     .. vim.bo.filetype
     .. " %l:%c"
+    .. "%="
     .. render_system_status()
     .. render_clock()
 end
