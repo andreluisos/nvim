@@ -1,15 +1,52 @@
+local buffer_text = require("buffer_text")
+
 local FORMATTER_TIMEOUT_MILLISECONDS = 5000
 local BUFFER_PATH_PLACEHOLDER = "{buffer_path}"
-local LINE_SEPARATOR = "\n"
 local FORMATTING_METHOD = "textDocument/formatting"
-local PRETTIER_COMMAND = { "prettier", "--stdin-filepath", BUFFER_PATH_PLACEHOLDER }
+local DEFAULT_SUCCESSFUL_EXIT_CODES = { 0 }
+local LINT_FINDINGS_EXIT_CODES = { 0, 1 }
 
-local FORMATTER_COMMANDS_BY_FILETYPE = {
-  lua = { "stylua", "-" },
-  javascript = PRETTIER_COMMAND,
-  typescript = PRETTIER_COMMAND,
-  typescriptreact = PRETTIER_COMMAND,
-  json = PRETTIER_COMMAND,
+local PRETTIER = { command = { "prettier", "--stdin-filepath", BUFFER_PATH_PLACEHOLDER } }
+local SQLFLUFF = {
+  command = { "sqlfluff", "format", "--dialect=ansi", "-" },
+  successful_exit_codes = LINT_FINDINGS_EXIT_CODES,
+}
+
+local FORMATTERS_BY_FILETYPE = {
+  lua = {
+    command = {
+      "stylua",
+      "--search-parent-directories",
+      "--respect-ignores",
+      "--stdin-filepath",
+      BUFFER_PATH_PLACEHOLDER,
+      "--",
+      "-",
+    },
+  },
+  python = { command = { "black", "--stdin-filename", BUFFER_PATH_PLACEHOLDER, "--quiet", "-" } },
+  java = { command = { "google-java-format", "-" } },
+  kotlin = { command = { "ktlint", "--format", "--stdin", "--log-level=none" } },
+  sql = SQLFLUFF,
+  mysql = SQLFLUFF,
+  plsql = SQLFLUFF,
+  css = PRETTIER,
+  graphql = PRETTIER,
+  handlebars = PRETTIER,
+  html = PRETTIER,
+  htmlangular = PRETTIER,
+  javascript = PRETTIER,
+  javascriptreact = PRETTIER,
+  json = PRETTIER,
+  jsonc = PRETTIER,
+  less = PRETTIER,
+  markdown = PRETTIER,
+  ["markdown.mdx"] = PRETTIER,
+  scss = PRETTIER,
+  typescript = PRETTIER,
+  typescriptreact = PRETTIER,
+  vue = PRETTIER,
+  yaml = PRETTIER,
 }
 
 local function resolve_formatter_command(command_template, buffer_path)
@@ -18,21 +55,11 @@ local function resolve_formatter_command(command_template, buffer_path)
   end, command_template)
 end
 
-local function read_buffer_text(bufnr)
-  return table.concat(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false), LINE_SEPARATOR) .. LINE_SEPARATOR
-end
-
-local function split_formatter_output(output)
-  local lines = vim.split(output, LINE_SEPARATOR, { plain = true })
-  if lines[#lines] == "" then
-    table.remove(lines)
-  end
-  return lines
-end
-
-local function run_formatter(command, input)
+local function run_formatter(formatter, buffer_path, input)
+  local command = resolve_formatter_command(formatter.command, buffer_path)
   local result = vim.system(command, { stdin = input, text = true }):wait(FORMATTER_TIMEOUT_MILLISECONDS)
-  if result.code ~= 0 then
+  local successful_exit_codes = formatter.successful_exit_codes or DEFAULT_SUCCESSFUL_EXIT_CODES
+  if not vim.tbl_contains(successful_exit_codes, result.code) then
     error(string.format("%s exited with code %d: %s", command[1], result.code, result.stderr or ""), 0)
   end
   return result.stdout
@@ -45,14 +72,14 @@ local function replace_buffer_lines_if_changed(bufnr, formatted_lines)
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, formatted_lines)
 end
 
-local function format_with_external_command(bufnr, command_template)
-  local command = resolve_formatter_command(command_template, vim.api.nvim_buf_get_name(bufnr))
-  local succeeded, output_or_error = pcall(run_formatter, command, read_buffer_text(bufnr))
+local function format_with_external_command(bufnr, formatter)
+  local succeeded, output_or_error =
+    pcall(run_formatter, formatter, vim.api.nvim_buf_get_name(bufnr), buffer_text.read(bufnr))
   if not succeeded then
     vim.notify("Formatting skipped: " .. output_or_error, vim.log.levels.WARN)
     return
   end
-  replace_buffer_lines_if_changed(bufnr, split_formatter_output(output_or_error))
+  replace_buffer_lines_if_changed(bufnr, buffer_text.split(output_or_error))
 end
 
 local function format_with_language_server(bufnr)
@@ -62,9 +89,9 @@ local function format_with_language_server(bufnr)
 end
 
 local function format_buffer_before_write(event)
-  local command_template = FORMATTER_COMMANDS_BY_FILETYPE[vim.bo[event.buf].filetype]
-  if command_template then
-    format_with_external_command(event.buf, command_template)
+  local formatter = FORMATTERS_BY_FILETYPE[vim.bo[event.buf].filetype]
+  if formatter then
+    format_with_external_command(event.buf, formatter)
   else
     format_with_language_server(event.buf)
   end
