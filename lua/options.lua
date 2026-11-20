@@ -5,6 +5,7 @@ vim.o.number = true
 vim.o.relativenumber = true
 vim.o.tabstop = INDENT_WIDTH
 vim.o.softtabstop = INDENT_WIDTH
+vim.o.shiftwidth = INDENT_WIDTH
 vim.o.signcolumn = "yes"
 vim.o.undofile = true
 vim.o.autoread = true
