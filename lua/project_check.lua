@@ -15,7 +15,7 @@ local CARGO_CHECKER = {
   root_markers = { { "Cargo.lock" }, { "Cargo.toml" } },
   error_format = COLON_LOCATION_FORMAT,
   build_command = function()
-    return { "cargo", "clippy", "--message-format=short" }
+    return { "cargo", "clippy", "--all-targets", "--message-format=short" }
   end,
 }
 
