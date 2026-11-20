@@ -177,6 +177,8 @@ local function map_netrw_keys()
     open_in_horizontal_split,
     { buffer = true, silent = true, desc = "Open file in horizontal split" }
   )
+  -- netrw binds <C-l> to refresh, which under Lexplore replaces the editing window with a tree.
+  vim.keymap.set("n", "<C-l>", "<cmd>wincmd l<cr>", { buffer = true, silent = true, desc = "Move to right split" })
 end
 
 vim.keymap.set("n", "<leader>e", toggle_explorer, { silent = true, desc = "Toggle file explorer at current file" })
