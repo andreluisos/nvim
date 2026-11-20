@@ -1,4 +1,5 @@
 local INDENT_WIDTH = 2
+local MAPPING_TIMEOUT_MILLISECONDS = 300
 
 vim.o.number = true
 vim.o.relativenumber = true
@@ -9,3 +10,4 @@ vim.o.undofile = true
 vim.o.autoread = true
 vim.o.laststatus = 3
 vim.o.cmdheight = 0
+vim.o.timeoutlen = MAPPING_TIMEOUT_MILLISECONDS
