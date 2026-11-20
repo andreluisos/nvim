@@ -1,9 +1,12 @@
 local M = {}
 
+local system_status = require("system_status")
+
 local MODE_HIGHLIGHT = "StlMode"
 local GIT_BRANCH_HIGHLIGHT = "StlGit"
 local GIT_TIMEOUT_MILLISECONDS = 1000
 local PATH_SEPARATOR_LENGTH = 1
+local SEGMENT_SEPARATOR = " | "
 
 local MODE_LABELS = {
   n = "NORMAL",
@@ -73,12 +76,21 @@ local function render_diagnostics()
   return table.concat(segments)
 end
 
+local function render_system_status()
+  local text = system_status.text()
+  if text == "" then
+    return ""
+  end
+  return escape_statusline_text(text) .. SEGMENT_SEPARATOR
+end
+
 function M.render()
   return render_mode()
     .. render_git_branch()
     .. " "
     .. render_path()
     .. "%="
+    .. render_system_status()
     .. render_diagnostics()
     .. vim.bo.filetype
     .. " %l:%c"
