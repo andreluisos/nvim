@@ -5,6 +5,12 @@ local BROWSE_SPLIT_REUSE_WINDOW = 0
 local KEEP_ALTERNATE_FILE = 1
 local DIRECTORY_SUFFIX_PATTERN = "/$"
 local NO_PREVIOUS_WINDOW = 0
+local TREE_INDENT = "| "
+local PARENT_DIRECTORY_LINE = "../"
+local DIRECTORY_SUFFIX = "/"
+local CLASSIFIER_SUFFIX_PATTERN = "[*@]$"
+local TOGGLE_DIRECTORY_KEY = "\r"
+local CLOSED_WINDOW = -1
 
 vim.g.netrw_liststyle = TREE_LIST_STYLE
 vim.g.netrw_banner = BANNER_HIDDEN
@@ -56,11 +62,86 @@ local function create_entry()
   end
 end
 
+local function read_tree_lines()
+  return vim.api.nvim_buf_get_lines(0, 0, -1, false)
+end
+
+local function relative_path_components(file_path)
+  local relative_path = vim.fs.relpath(vim.fn.getcwd(), file_path)
+  if not relative_path then
+    return {}
+  end
+  return vim.split(relative_path, DIRECTORY_SUFFIX, { plain = true })
+end
+
+local function find_root_line(lines)
+  for line_number, line in ipairs(lines) do
+    if line ~= PARENT_DIRECTORY_LINE and not vim.startswith(line, TREE_INDENT) then
+      return line_number
+    end
+  end
+end
+
+local function entry_name_at(line, depth)
+  return (line:sub(#TREE_INDENT * depth + 1):gsub(CLASSIFIER_SUFFIX_PATTERN, ""))
+end
+
+-- Children of a tree line follow it directly, one indent deeper, until the indent shrinks.
+local function find_child_line(lines, parent_line, depth, entry)
+  local child_prefix = string.rep(TREE_INDENT, depth)
+  for line_number = parent_line + 1, #lines do
+    local line = lines[line_number]
+    if not vim.startswith(line, child_prefix) then
+      return nil
+    end
+    if entry_name_at(line, depth) == entry then
+      return line_number
+    end
+  end
+end
+
+local function is_expanded(lines, line_number, depth)
+  local next_line = lines[line_number + 1]
+  return next_line ~= nil and vim.startswith(next_line, string.rep(TREE_INDENT, depth + 1))
+end
+
+local function reveal_path(components)
+  local parent_line = find_root_line(read_tree_lines())
+  for depth, component in ipairs(components) do
+    local is_directory = depth < #components
+    local entry = is_directory and component .. DIRECTORY_SUFFIX or component
+    local line_number = parent_line and find_child_line(read_tree_lines(), parent_line, depth, entry)
+    if not line_number then
+      return
+    end
+    vim.api.nvim_win_set_cursor(0, { line_number, 0 })
+    if is_directory and not is_expanded(read_tree_lines(), line_number, depth) then
+      vim.cmd.normal(TOGGLE_DIRECTORY_KEY)
+    end
+    parent_line = line_number
+  end
+end
+
+local function is_explorer_open()
+  local explorer_buffer = vim.t.netrw_lexbufnr
+  return explorer_buffer ~= nil and vim.fn.bufwinnr(explorer_buffer) ~= CLOSED_WINDOW
+end
+
+local function toggle_explorer()
+  if is_explorer_open() then
+    vim.cmd.Lexplore()
+    return
+  end
+  local components = relative_path_components(vim.api.nvim_buf_get_name(0))
+  vim.cmd.Lexplore()
+  reveal_path(components)
+end
+
 local function map_netrw_keys()
   vim.keymap.set("n", "%", create_entry, { buffer = true, silent = true, desc = "Create file in previous window" })
 end
 
-vim.keymap.set("n", "<leader>e", "<cmd>Lexplore<cr>", { silent = true, desc = "Toggle file explorer" })
+vim.keymap.set("n", "<leader>e", toggle_explorer, { silent = true, desc = "Toggle file explorer at current file" })
 
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("netrw_keys", { clear = true }),
