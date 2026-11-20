@@ -10,6 +10,7 @@ local SEGMENT_SEPARATOR = " | "
 local CLOCK_FORMAT = "%d/%m/%Y %H:%M:%S"
 local CLOCK_REDRAW_INTERVAL_MILLISECONDS = 1000
 local START_IMMEDIATELY = 0
+local SERVER_NAME_SEPARATOR = ","
 
 local MODE_LABELS = {
   n = "NORMAL",
@@ -79,6 +80,16 @@ local function render_diagnostics()
   return table.concat(segments)
 end
 
+local function render_language_servers()
+  local names = vim.tbl_map(function(client)
+    return client.name
+  end, vim.lsp.get_clients({ bufnr = 0 }))
+  if #names == 0 then
+    return ""
+  end
+  return " " .. escape_statusline_text(table.concat(names, SERVER_NAME_SEPARATOR))
+end
+
 local function render_system_status()
   local text = system_status.text()
   if text == "" then
@@ -99,6 +110,7 @@ function M.render()
     .. "%="
     .. render_diagnostics()
     .. vim.bo.filetype
+    .. render_language_servers()
     .. " %l:%c"
     .. render_system_status()
     .. render_clock()
@@ -135,6 +147,7 @@ end
 local statusline_group = vim.api.nvim_create_augroup("native_statusline", { clear = true })
 vim.api.nvim_create_autocmd("BufEnter", { group = statusline_group, callback = update_buffer_git_context })
 vim.api.nvim_create_autocmd("DiagnosticChanged", { group = statusline_group, callback = redraw_statusline })
+vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach" }, { group = statusline_group, callback = redraw_statusline })
 
 define_highlights()
 start_clock_timer()
