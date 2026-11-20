@@ -1,6 +1,6 @@
 local TREE_LIST_STYLE = 3
 local BANNER_HIDDEN = 0
-local EXPLORER_WIDTH_PERCENT = 25
+local EXPLORER_WIDTH_COLUMNS = 30
 local BROWSE_SPLIT_REUSE_WINDOW = 0
 local KEEP_ALTERNATE_FILE = 1
 local DIRECTORY_SUFFIX_PATTERN = "/$"
@@ -11,10 +11,13 @@ local DIRECTORY_SUFFIX = "/"
 local CLASSIFIER_SUFFIX_PATTERN = "[*@]$"
 local TOGGLE_DIRECTORY_KEY = "\r"
 local CLOSED_WINDOW = -1
+local VERTICAL_SPLIT_COMMAND = "vsplit"
+local HORIZONTAL_SPLIT_COMMAND = "split"
 
 vim.g.netrw_liststyle = TREE_LIST_STYLE
 vim.g.netrw_banner = BANNER_HIDDEN
-vim.g.netrw_winsize = EXPLORER_WIDTH_PERCENT
+-- Negative netrw_winsize means an absolute number of columns instead of a percentage.
+vim.g.netrw_winsize = -EXPLORER_WIDTH_COLUMNS
 vim.g.netrw_browse_split = BROWSE_SPLIT_REUSE_WINDOW
 vim.g.netrw_altfile = KEEP_ALTERNATE_FILE
 
@@ -137,8 +140,43 @@ local function toggle_explorer()
   reveal_path(components)
 end
 
+local function open_in_split(split_command)
+  local entry = vim.fn["netrw#Call"]("NetrwGetWord")
+  if entry:match(DIRECTORY_SUFFIX_PATTERN) then
+    vim.notify("v/o open files only", vim.log.levels.WARN)
+    return
+  end
+  local path = vim.fs.joinpath(vim.fn["netrw#Call"]("NetrwTreeDir", 1), entry)
+  if vim.fn.winnr("#") == NO_PREVIOUS_WINDOW then
+    vim.cmd("botright " .. split_command .. " " .. vim.fn.fnameescape(path))
+    return
+  end
+  vim.cmd.wincmd("p")
+  vim.cmd(split_command .. " " .. vim.fn.fnameescape(path))
+end
+
+local function open_in_vertical_split()
+  open_in_split(VERTICAL_SPLIT_COMMAND)
+end
+
+local function open_in_horizontal_split()
+  open_in_split(HORIZONTAL_SPLIT_COMMAND)
+end
+
 local function map_netrw_keys()
   vim.keymap.set("n", "%", create_entry, { buffer = true, silent = true, desc = "Create file in previous window" })
+  vim.keymap.set(
+    "n",
+    "v",
+    open_in_vertical_split,
+    { buffer = true, silent = true, desc = "Open file in vertical split" }
+  )
+  vim.keymap.set(
+    "n",
+    "o",
+    open_in_horizontal_split,
+    { buffer = true, silent = true, desc = "Open file in horizontal split" }
+  )
 end
 
 vim.keymap.set("n", "<leader>e", toggle_explorer, { silent = true, desc = "Toggle file explorer at current file" })
