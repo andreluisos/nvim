@@ -1,5 +1,7 @@
 local M = {}
 
+local quickfix = require("quickfix")
+
 local DIRECTORY_LINE_FORMAT = "Entering directory '%s'"
 local DIRECTORY_ERROR_FORMAT = "%DEntering directory '%f'"
 local IGNORE_OTHER_LINES_FORMAT = "%-G%.%#"
@@ -115,6 +117,14 @@ function M.check()
   run_checker(checker, root)
 end
 
-vim.keymap.set("n", "<leader>D", M.check, { silent = true, desc = "Check whole project" })
+function M.toggle()
+  if quickfix.is_open() then
+    vim.cmd.cclose()
+    return
+  end
+  M.check()
+end
+
+vim.keymap.set("n", "<leader>D", M.toggle, { silent = true, desc = "Toggle whole project check" })
 
 return M

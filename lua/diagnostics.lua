@@ -1,10 +1,6 @@
-local QUICKFIX_CLOSED = 0
+local quickfix = require("quickfix")
 local CURRENT_BUFFER = 0
 local BUFFER_LIST_TITLE = "Buffer diagnostics"
-
-local function is_quickfix_open()
-  return vim.fn.getqflist({ winid = 0 }).winid ~= QUICKFIX_CLOSED
-end
 
 local function list_buffer_diagnostics()
   local items = vim.diagnostic.toqflist(vim.diagnostic.get(CURRENT_BUFFER))
@@ -13,7 +9,7 @@ local function list_buffer_diagnostics()
 end
 
 local function toggle_diagnostics_list()
-  if is_quickfix_open() then
+  if quickfix.is_open() then
     vim.cmd.cclose()
     return
   end
