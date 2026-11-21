@@ -4,6 +4,10 @@
       "rev": "abc95e13502ff3acbed151de97667174b2e4132d",
       "src": "https://github.com/b0o/SchemaStore.nvim"
     },
+    "claudecode.nvim": {
+      "rev": "6ad8e0fdbda84486f13f7f1fa4802942f4877f13",
+      "src": "https://github.com/coder/claudecode.nvim"
+    },
     "diffview.nvim": {
       "rev": "4516612fe98ff56ae0415a259ff6361a89419b0a",
       "src": "https://github.com/sindrets/diffview.nvim"
