@@ -8,6 +8,7 @@ which_key.setup({
   spec = {
     {
       mode = HINT_MODES,
+      { "<leader>a", group = "ai" },
       { "<leader>b", group = "buffer" },
       { "<leader>f", group = "file/find" },
       { "<leader>g", group = "git" },
