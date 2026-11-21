@@ -4,6 +4,10 @@ local system_status = require("system_status")
 
 local MODE_HIGHLIGHT = "StlMode"
 local GIT_BRANCH_HIGHLIGHT = "StlGit"
+local MODE_FOREGROUND = "#deddda"
+local MODE_BACKGROUND = "#193d66"
+local GIT_BRANCH_FOREGROUND = "#ffffff"
+local GIT_BRANCH_BACKGROUND = "#4a4a4d"
 local GIT_TIMEOUT_MILLISECONDS = 1000
 local PATH_SEPARATOR_LENGTH = 1
 local SEGMENT_SEPARATOR = " | "
@@ -34,11 +38,8 @@ local DIAGNOSTIC_SEGMENTS = {
 }
 
 local function define_highlights()
-  local selected_menu = vim.api.nvim_get_hl(0, { name = "PmenuSel", link = false })
-  local directory = vim.api.nvim_get_hl(0, { name = "Directory", link = false })
-  local visual = vim.api.nvim_get_hl(0, { name = "Visual", link = false })
-  vim.api.nvim_set_hl(0, MODE_HIGHLIGHT, { fg = selected_menu.fg, bg = visual.bg })
-  vim.api.nvim_set_hl(0, GIT_BRANCH_HIGHLIGHT, { fg = directory.fg, bg = selected_menu.bg })
+  vim.api.nvim_set_hl(0, MODE_HIGHLIGHT, { fg = MODE_FOREGROUND, bg = MODE_BACKGROUND })
+  vim.api.nvim_set_hl(0, GIT_BRANCH_HIGHLIGHT, { fg = GIT_BRANCH_FOREGROUND, bg = GIT_BRANCH_BACKGROUND })
 end
 
 local function highlighted(highlight, text)
