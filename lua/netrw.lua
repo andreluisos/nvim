@@ -13,6 +13,7 @@ local TOGGLE_DIRECTORY_KEY = "\r"
 local CLOSED_WINDOW = -1
 local VERTICAL_SPLIT_COMMAND = "vsplit"
 local HORIZONTAL_SPLIT_COMMAND = "split"
+local WIPE_BUFFER_COMMAND = "bwipeout"
 
 vim.g.netrw_liststyle = TREE_LIST_STYLE
 vim.g.netrw_banner = BANNER_HIDDEN
@@ -130,9 +131,18 @@ local function is_explorer_open()
   return explorer_buffer ~= nil and vim.fn.bufwinnr(explorer_buffer) ~= CLOSED_WINDOW
 end
 
+-- Lexplore reuses its hidden tree buffer on the next open and strands the empty buffer it split.
+local function close_explorer()
+  local explorer_buffer = vim.t.netrw_lexbufnr
+  vim.cmd.Lexplore()
+  if vim.api.nvim_buf_is_valid(explorer_buffer) then
+    vim.cmd(WIPE_BUFFER_COMMAND .. " " .. explorer_buffer)
+  end
+end
+
 local function toggle_explorer()
   if is_explorer_open() then
-    vim.cmd.Lexplore()
+    close_explorer()
     return
   end
   local components = relative_path_components(vim.api.nvim_buf_get_name(0))
