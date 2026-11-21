@@ -10,4 +10,7 @@ vim.pack.add({
   github_plugin("mfussenegger/nvim-jdtls"),
   github_plugin("mrcjkb/rustaceanvim", vim.version.range("9")),
   github_plugin("b0o/SchemaStore.nvim"),
+  github_plugin("nvim-lua/plenary.nvim"),
+  github_plugin("NeogitOrg/neogit", vim.version.range("3")),
+  github_plugin("sindrets/diffview.nvim"),
 })

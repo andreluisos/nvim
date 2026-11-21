@@ -4,10 +4,19 @@
       "rev": "abc95e13502ff3acbed151de97667174b2e4132d",
       "src": "https://github.com/b0o/SchemaStore.nvim"
     },
+    "diffview.nvim": {
+      "rev": "4516612fe98ff56ae0415a259ff6361a89419b0a",
+      "src": "https://github.com/sindrets/diffview.nvim"
+    },
     "mason.nvim": {
       "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
       "src": "https://github.com/mason-org/mason.nvim",
       "version": "2.0.0 - 3.0.0"
+    },
+    "neogit": {
+      "rev": "e106a39a8a37a9420f374545c876f8b52baf1c80",
+      "src": "https://github.com/NeogitOrg/neogit",
+      "version": "3.0.0 - 4.0.0"
     },
     "nvim-jdtls": {
       "rev": "6e9d953f0b82bccdb834cfde0e893f3119c22592",
@@ -17,6 +26,10 @@
       "rev": "4648fd8ba5c678d7e2db75ae44ffac269bb589d8",
       "src": "https://github.com/neovim/nvim-lspconfig",
       "version": "2.0.0 - 3.0.0"
+    },
+    "plenary.nvim": {
+      "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "rustaceanvim": {
       "rev": "b7ca983c6ec88c94cf25e5deaad96df9a68b9a98",
