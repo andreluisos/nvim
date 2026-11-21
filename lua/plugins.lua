@@ -13,4 +13,5 @@ vim.pack.add({
   github_plugin("nvim-lua/plenary.nvim"),
   github_plugin("NeogitOrg/neogit", vim.version.range("3")),
   github_plugin("sindrets/diffview.nvim"),
+  github_plugin("folke/snacks.nvim", vim.version.range("2")),
 })
