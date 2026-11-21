@@ -12,6 +12,7 @@ which_key.setup({
       { "<leader>f", group = "file/find" },
       { "<leader>g", group = "git" },
       { "<leader>s", group = "search" },
+      { "<leader>u", group = "ui" },
       { "[", group = "prev" },
       { "]", group = "next" },
       { "g", group = "goto" },
