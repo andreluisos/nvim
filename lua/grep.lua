@@ -13,4 +13,4 @@ local function prompt_for_grep()
   vim.ui.input({ prompt = "Grep: " }, grep_into_quickfix)
 end
 
-vim.keymap.set("n", "<leader>g", prompt_for_grep, { silent = true, desc = "Grep project" })
+vim.keymap.set("n", "<leader>/", prompt_for_grep, { silent = true, desc = "Grep project" })
