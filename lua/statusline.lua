@@ -46,7 +46,7 @@ local function highlighted(highlight, text)
   return "%#" .. highlight .. "#" .. text .. "%*"
 end
 
-local function escape_statusline_text(text)
+function M.escape_statusline_text(text)
   return (text:gsub("%%", "%%%%"))
 end
 
@@ -59,14 +59,14 @@ local function render_git_branch()
   if not vim.b.git_branch then
     return ""
   end
-  return highlighted(GIT_BRANCH_HIGHLIGHT, " " .. escape_statusline_text(vim.b.git_branch) .. " ")
+  return highlighted(GIT_BRANCH_HIGHLIGHT, " " .. M.escape_statusline_text(vim.b.git_branch) .. " ")
 end
 
 local function render_path()
   if not vim.b.rel_path then
     return "%f"
   end
-  return escape_statusline_text(vim.b.rel_path)
+  return M.escape_statusline_text(vim.b.rel_path)
 end
 
 local function render_diagnostics()
@@ -88,7 +88,7 @@ local function render_language_servers()
   if #names == 0 then
     return ""
   end
-  return " " .. escape_statusline_text(table.concat(names, SERVER_NAME_SEPARATOR))
+  return " " .. M.escape_statusline_text(table.concat(names, SERVER_NAME_SEPARATOR))
 end
 
 local function render_system_status()
@@ -96,7 +96,7 @@ local function render_system_status()
   if text == "" then
     return ""
   end
-  return SEGMENT_SEPARATOR .. escape_statusline_text(text)
+  return SEGMENT_SEPARATOR .. M.escape_statusline_text(text)
 end
 
 local function render_clock()
