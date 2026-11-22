@@ -14,18 +14,11 @@ local ENABLED_LANGUAGE_SERVERS = {
   "kotlin_lsp",
   "clangd",
 }
-local COMPLETION_METHOD = "textDocument/completion"
 local INLAY_HINT_METHOD = "textDocument/inlayHint"
 local INLAY_HINT_EXCLUDED_FILETYPES = { "vue" }
 local TAILWIND_EXCLUDED_FILETYPES = { "markdown" }
 local DIAGNOSTIC_VIRTUAL_TEXT_SPACING = 4
 local DIAGNOSTIC_VIRTUAL_TEXT_PREFIX = "●"
-
-local function enable_completion(client, bufnr)
-  if client:supports_method(COMPLETION_METHOD) then
-    vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
-  end
-end
 
 local function enable_inlay_hints(client, bufnr)
   local is_excluded = vim.tbl_contains(INLAY_HINT_EXCLUDED_FILETYPES, vim.bo[bufnr].filetype)
@@ -39,7 +32,6 @@ local function configure_attached_buffer(event)
   if not client then
     return
   end
-  enable_completion(client, event.buf)
   enable_inlay_hints(client, event.buf)
 end
 
@@ -69,6 +61,6 @@ vim.diagnostic.config({
 
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("lsp_attach", { clear = true }),
-  desc = "Enable completion and inlay hints for attached language servers",
+  desc = "Enable inlay hints for attached language servers",
   callback = configure_attached_buffer,
 })

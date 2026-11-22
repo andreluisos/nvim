@@ -1,20 +1,7 @@
 local project_root = require("project_root")
 local snacks = require("snacks")
 
-local PICKER_INPUT_FILETYPE = "snacks_picker_input"
-
 snacks.setup({ picker = { enabled = true } })
-
--- The native completion menu swallows TextChangedI, so the picker would stop filtering.
-local function disable_autocomplete()
-  vim.opt_local.autocomplete = false
-end
-
-vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("picker_input", { clear = true }),
-  pattern = PICKER_INPUT_FILETYPE,
-  callback = disable_autocomplete,
-})
 
 local function open_picker(source)
   return function()
