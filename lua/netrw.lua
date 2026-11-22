@@ -17,6 +17,7 @@ local WIPE_BUFFER_COMMAND = "bwipeout"
 local TREE_BUFFER_NAME = "NetrwTreeListing"
 local IS_DIRECTORY = 1
 local NO_WINDOWS = 0
+local EQUALIZE_WIDTHS_COMMAND = "horizontal wincmd ="
 
 vim.g.netrw_liststyle = TREE_LIST_STYLE
 vim.g.netrw_banner = BANNER_HIDDEN
@@ -152,14 +153,21 @@ local function wipe_hidden_explorer_buffers()
   end
 end
 
+-- The explorer takes its columns from one neighbour only; the explorer itself keeps winfixwidth.
+local function equalize_split_widths()
+  vim.cmd(EQUALIZE_WIDTHS_COMMAND)
+end
+
 local function toggle_explorer()
   if is_explorer_open() then
     vim.cmd.Lexplore()
+    equalize_split_widths()
     return
   end
   local components = relative_path_components(vim.api.nvim_buf_get_name(0))
   wipe_hidden_explorer_buffers()
   vim.cmd.Lexplore()
+  equalize_split_widths()
   reveal_path(components)
 end
 
