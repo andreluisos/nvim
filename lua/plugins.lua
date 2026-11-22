@@ -18,4 +18,6 @@ vim.pack.add({
   github_plugin("coder/claudecode.nvim"),
   github_plugin("Saghen/blink.cmp", vim.version.range("1")),
   github_plugin("mikavilpas/blink-ripgrep.nvim", vim.version.range("2")),
+  github_plugin("nvim-treesitter/nvim-treesitter"),
+  github_plugin("folke/flash.nvim", vim.version.range("2")),
 })
