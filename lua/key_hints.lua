@@ -12,6 +12,7 @@ which_key.setup({
       { "<leader>b", group = "buffer" },
       { "<leader>f", group = "file/find" },
       { "<leader>g", group = "git" },
+      { "<leader>gh", group = "hunks" },
       { "<leader>s", group = "search" },
       { "<leader>u", group = "ui" },
       { "[", group = "prev" },
