@@ -16,4 +16,6 @@ vim.pack.add({
   github_plugin("folke/snacks.nvim", vim.version.range("2")),
   github_plugin("folke/which-key.nvim", vim.version.range("3")),
   github_plugin("coder/claudecode.nvim"),
+  github_plugin("Saghen/blink.cmp", vim.version.range("1")),
+  github_plugin("mikavilpas/blink-ripgrep.nvim", vim.version.range("2")),
 })

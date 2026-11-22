@@ -4,6 +4,16 @@
       "rev": "abc95e13502ff3acbed151de97667174b2e4132d",
       "src": "https://github.com/b0o/SchemaStore.nvim"
     },
+    "blink-ripgrep.nvim": {
+      "rev": "670e2938d9c9d8840f0d58a3846f067454d15e7b",
+      "src": "https://github.com/mikavilpas/blink-ripgrep.nvim",
+      "version": "2.0.0 - 3.0.0"
+    },
+    "blink.cmp": {
+      "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
+      "src": "https://github.com/Saghen/blink.cmp",
+      "version": "1.0.0 - 2.0.0"
+    },
     "claudecode.nvim": {
       "rev": "6ad8e0fdbda84486f13f7f1fa4802942f4877f13",
       "src": "https://github.com/coder/claudecode.nvim"
