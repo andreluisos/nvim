@@ -51,8 +51,6 @@ return {
     priority = 1000,
   },
 
-  { "armannikoyan/rusty" },
-
   {
     "LazyVim/LazyVim",
     opts = {
