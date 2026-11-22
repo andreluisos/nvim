@@ -20,4 +20,5 @@ vim.pack.add({
   github_plugin("mikavilpas/blink-ripgrep.nvim", vim.version.range("2")),
   github_plugin("nvim-treesitter/nvim-treesitter"),
   github_plugin("folke/flash.nvim", vim.version.range("2")),
+  github_plugin("rachartier/tiny-inline-diagnostic.nvim"),
 })
