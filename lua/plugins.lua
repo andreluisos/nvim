@@ -23,4 +23,5 @@ vim.pack.add({
   github_plugin("rachartier/tiny-inline-diagnostic.nvim"),
   github_plugin("j-hui/fidget.nvim", vim.version.range("2")),
   github_plugin("artemave/workspace-diagnostics.nvim"),
+  github_plugin("lewis6991/gitsigns.nvim", vim.version.range("2")),
 })
