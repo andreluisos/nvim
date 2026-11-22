@@ -22,6 +22,11 @@
       "rev": "4516612fe98ff56ae0415a259ff6361a89419b0a",
       "src": "https://github.com/sindrets/diffview.nvim"
     },
+    "fidget.nvim": {
+      "rev": "e1a07a5e46fb65a45a0c76870140bd2d16a73ebf",
+      "src": "https://github.com/j-hui/fidget.nvim",
+      "version": "2.0.0 - 3.0.0"
+    },
     "flash.nvim": {
       "rev": "ec0bf2842189f65f60fd40bf3557cac1029cc932",
       "src": "https://github.com/folke/flash.nvim",

@@ -21,4 +21,5 @@ vim.pack.add({
   github_plugin("nvim-treesitter/nvim-treesitter"),
   github_plugin("folke/flash.nvim", vim.version.range("2")),
   github_plugin("rachartier/tiny-inline-diagnostic.nvim"),
+  github_plugin("j-hui/fidget.nvim", vim.version.range("2")),
 })
