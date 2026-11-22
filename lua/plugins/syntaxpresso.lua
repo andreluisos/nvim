@@ -1,1 +1,0 @@
-return { "syntaxpresso/syntaxpresso.nvim" }

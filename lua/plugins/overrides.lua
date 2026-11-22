@@ -1,6 +1,5 @@
-if false then
-  return {}
-else
+local active = true
+if active then
   return {
     { "folke/snacks.nvim", opts = { dashboard = { enabled = false } } },
     {

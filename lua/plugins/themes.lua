@@ -1,3 +1,4 @@
+local active_theme = "onedark"
 return {
   {
     "navarasu/onedark.nvim",
@@ -44,8 +45,6 @@ return {
     end,
   },
 
-  { "projekt0n/github-nvim-theme" },
-
   {
     "Mofiqul/adwaita.nvim",
     lazy = false,
@@ -57,7 +56,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "adwaita",
+      colorscheme = active_theme,
     },
   },
 }
