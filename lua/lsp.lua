@@ -17,8 +17,6 @@ local ENABLED_LANGUAGE_SERVERS = {
 local INLAY_HINT_METHOD = "textDocument/inlayHint"
 local INLAY_HINT_EXCLUDED_FILETYPES = { "vue" }
 local TAILWIND_EXCLUDED_FILETYPES = { "markdown" }
-local DIAGNOSTIC_VIRTUAL_TEXT_SPACING = 4
-local DIAGNOSTIC_VIRTUAL_TEXT_PREFIX = "●"
 
 local function enable_inlay_hints(client, bufnr)
   local is_excluded = vim.tbl_contains(INLAY_HINT_EXCLUDED_FILETYPES, vim.bo[bufnr].filetype)
@@ -51,11 +49,8 @@ vim.lsp.enable(ENABLED_LANGUAGE_SERVERS)
 vim.diagnostic.config({
   underline = true,
   update_in_insert = false,
-  virtual_text = {
-    spacing = DIAGNOSTIC_VIRTUAL_TEXT_SPACING,
-    source = "if_many",
-    prefix = DIAGNOSTIC_VIRTUAL_TEXT_PREFIX,
-  },
+  -- tiny-inline-diagnostic draws the messages; Neovim's virtual text would duplicate them.
+  virtual_text = false,
   severity_sort = true,
 })
 
