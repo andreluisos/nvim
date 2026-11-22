@@ -30,10 +30,14 @@ return {
 
   {
     "akinsho/bufferline.nvim",
-    opts = {
-      options = {
-        always_show_bufferline = true,
-      },
-    },
+    opts = function(_, opts)
+      opts.options.always_show_bufferline = true
+      -- Continue the explorer's window separator through the bufferline row so both lines share one column
+      for _, offset in ipairs(opts.options.offsets) do
+        if offset.filetype == "snacks_layout_box" then
+          offset.separator = true
+        end
+      end
+    end,
   },
 }
