@@ -14,6 +14,9 @@ local CLOSED_WINDOW = -1
 local VERTICAL_SPLIT_COMMAND = "vsplit"
 local HORIZONTAL_SPLIT_COMMAND = "split"
 local WIPE_BUFFER_COMMAND = "bwipeout"
+local TREE_BUFFER_NAME = "NetrwTreeListing"
+local IS_DIRECTORY = 1
+local NO_WINDOWS = 0
 
 vim.g.netrw_liststyle = TREE_LIST_STYLE
 vim.g.netrw_banner = BANNER_HIDDEN
@@ -131,21 +134,31 @@ local function is_explorer_open()
   return explorer_buffer ~= nil and vim.fn.bufwinnr(explorer_buffer) ~= CLOSED_WINDOW
 end
 
--- Lexplore reuses its hidden tree buffer on the next open and strands the empty buffer it split.
-local function close_explorer()
-  local explorer_buffer = vim.t.netrw_lexbufnr
-  vim.cmd.Lexplore()
-  if vim.api.nvim_buf_is_valid(explorer_buffer) then
-    vim.cmd(WIPE_BUFFER_COMMAND .. " " .. explorer_buffer)
+local function is_hidden(buffer)
+  return #vim.fn.win_findbuf(buffer) == NO_WINDOWS
+end
+
+local function is_explorer_buffer(buffer)
+  local name = vim.api.nvim_buf_get_name(buffer)
+  return vim.fn.isdirectory(name) == IS_DIRECTORY or vim.fs.basename(name) == TREE_BUFFER_NAME
+end
+
+-- Lexplore switches to a hidden netrw buffer when one exists, stranding the empty buffer it split.
+local function wipe_hidden_explorer_buffers()
+  for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
+    if is_hidden(buffer) and is_explorer_buffer(buffer) then
+      vim.cmd(WIPE_BUFFER_COMMAND .. " " .. buffer)
+    end
   end
 end
 
 local function toggle_explorer()
   if is_explorer_open() then
-    close_explorer()
+    vim.cmd.Lexplore()
     return
   end
   local components = relative_path_components(vim.api.nvim_buf_get_name(0))
+  wipe_hidden_explorer_buffers()
   vim.cmd.Lexplore()
   reveal_path(components)
 end
