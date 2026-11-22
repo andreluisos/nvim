@@ -2,6 +2,7 @@ local active_theme = "onedark"
 return {
   {
     "navarasu/onedark.nvim",
+    enabled = true,
     config = function()
       require("onedark").setup({
         -- Main options --
@@ -47,6 +48,7 @@ return {
 
   {
     "Mofiqul/adwaita.nvim",
+    enabled = true,
     lazy = false,
     priority = 1000,
   },

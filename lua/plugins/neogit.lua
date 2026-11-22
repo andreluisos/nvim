@@ -1,5 +1,6 @@
 return {
   "NeogitOrg/neogit",
+  enabled = true,
   lazy = true,
   dependencies = {
     -- Only one of these is needed.

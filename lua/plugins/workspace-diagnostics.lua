@@ -8,6 +8,7 @@ end
 
 return {
   "artemave/workspace-diagnostics.nvim",
+  enabled = true,
   event = "LspAttach",
   config = function()
     Snacks.util.lsp.on(populate_workspace_diagnostics_for_listed_servers)
