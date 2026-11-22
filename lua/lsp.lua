@@ -17,6 +17,11 @@ local ENABLED_LANGUAGE_SERVERS = {
 local INLAY_HINT_METHOD = "textDocument/inlayHint"
 local INLAY_HINT_EXCLUDED_FILETYPES = { "vue" }
 local TAILWIND_EXCLUDED_FILETYPES = { "markdown" }
+local WORKSPACE_DIAGNOSTIC_METHOD = "workspace/diagnostic"
+-- jdtls already publishes diagnostics for the whole project once its build finishes.
+local WORKSPACE_DIAGNOSTICS_EXCLUDED_CLIENTS = { "jdtls" }
+
+local workspace_diagnostics_requested = {}
 
 local function enable_inlay_hints(client, bufnr)
   local is_excluded = vim.tbl_contains(INLAY_HINT_EXCLUDED_FILETYPES, vim.bo[bufnr].filetype)
@@ -25,12 +30,32 @@ local function enable_inlay_hints(client, bufnr)
   end
 end
 
+local function request_native_workspace_diagnostics(client)
+  if workspace_diagnostics_requested[client.id] then
+    return
+  end
+  workspace_diagnostics_requested[client.id] = true
+  vim.lsp.buf.workspace_diagnostics({ client_id = client.id })
+end
+
+local function populate_workspace_diagnostics(client, bufnr)
+  if vim.tbl_contains(WORKSPACE_DIAGNOSTICS_EXCLUDED_CLIENTS, client.name) then
+    return
+  end
+  if client:supports_method(WORKSPACE_DIAGNOSTIC_METHOD, bufnr) then
+    request_native_workspace_diagnostics(client)
+    return
+  end
+  require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
+end
+
 local function configure_attached_buffer(event)
   local client = vim.lsp.get_client_by_id(event.data.client_id)
   if not client then
     return
   end
   enable_inlay_hints(client, event.buf)
+  populate_workspace_diagnostics(client, event.buf)
 end
 
 local function exclude_tailwind_filetypes()
@@ -56,6 +81,6 @@ vim.diagnostic.config({
 
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("lsp_attach", { clear = true }),
-  desc = "Enable inlay hints for attached language servers",
+  desc = "Enable inlay hints and workspace diagnostics for attached language servers",
   callback = configure_attached_buffer,
 })
