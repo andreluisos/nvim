@@ -3,6 +3,7 @@ vim.g.mapleader = " "
 require("plugins")
 require("options")
 require("filetypes")
+require("treesitter")
 require("mason_tools")
 require("lsp")
 require("completion")
